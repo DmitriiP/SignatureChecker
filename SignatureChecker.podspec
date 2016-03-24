@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!  
   s.description      = <<-DESC
-Contains checks for changes in app after release in iTunes.
+Contains checks for changes in app after release in iTunes. Same as summary.
                        DESC
 
   s.homepage         = "https://github.com/DmitriiP/SignatureChecker"
