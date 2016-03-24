@@ -20,10 +20,6 @@ it, simply add the following line to your Podfile:
 pod "SignatureChecker"
 ```
 
-## Author
-
-Dmitrii Prihodco, dmitrii.prihodco@gmail.com
-
 ## License
 
 SignatureChecker is available under the MIT license. See the LICENSE file for more info.

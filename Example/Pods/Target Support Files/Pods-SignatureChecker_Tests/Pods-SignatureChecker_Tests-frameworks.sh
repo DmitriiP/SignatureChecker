@@ -84,11 +84,13 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "Pods-SignatureChecker_Tests/AFNetworking.framework"
   install_framework "Pods-SignatureChecker_Tests/Expecta.framework"
   install_framework "Pods-SignatureChecker_Tests/SignatureChecker.framework"
   install_framework "Pods-SignatureChecker_Tests/Specta.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "Pods-SignatureChecker_Tests/AFNetworking.framework"
   install_framework "Pods-SignatureChecker_Tests/Expecta.framework"
   install_framework "Pods-SignatureChecker_Tests/SignatureChecker.framework"
   install_framework "Pods-SignatureChecker_Tests/Specta.framework"
