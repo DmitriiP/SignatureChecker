@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "SignatureChecker"
-  s.version          = "0.1.0"
+  s.version          = "0.1.1"
   s.summary          = "Contains checks for changes in app after release in iTunes."
 
 # This description is used to generate tags and improve search results.
@@ -34,5 +34,5 @@ Contains checks for changes in app after release in iTunes. Same as summary.
 
   # s.public_header_files = 'Pod/Classes/**/Checker.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  s.dependency 'AFNetworking', '~> 3.0'
+  s.dependency 'AFNetworking', '>= 2.0'
 end
