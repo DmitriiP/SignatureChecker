@@ -17,7 +17,7 @@ SignatureChecker is available through [CocoaPods](http://cocoapods.org). To inst
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod "SignatureChecker"
+pod 'SignatureChecker', :git => "https://github.com/DmitriiP/SignatureChecker"
 ```
 
 ## License
