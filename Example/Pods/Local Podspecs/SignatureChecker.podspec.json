@@ -1,0 +1,25 @@
+{
+  "name": "SignatureChecker",
+  "version": "0.1.0",
+  "summary": "A short description of SignatureChecker.",
+  "description": "",
+  "homepage": "https://github.com/<GITHUB_USERNAME>/SignatureChecker",
+  "license": "MIT",
+  "authors": {
+    "Dmitrii Prihodco": "dmitrii.prihodco@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/<GITHUB_USERNAME>/SignatureChecker.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "requires_arc": true,
+  "source_files": "Pod/Classes/**/*",
+  "resource_bundles": {
+    "SignatureChecker": [
+      "Pod/Assets/*.png"
+    ]
+  }
+}

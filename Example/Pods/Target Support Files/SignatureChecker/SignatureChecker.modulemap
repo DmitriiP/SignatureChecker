@@ -1,0 +1,6 @@
+framework module SignatureChecker {
+  umbrella header "SignatureChecker-umbrella.h"
+
+  export *
+  module * { export * }
+}

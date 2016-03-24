@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = "SignatureChecker"
   s.version          = "0.1.0"
-  s.summary          = "A short description of SignatureChecker."
+  s.summary          = "Contains checks for changes in app after release in iTunes."
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -17,13 +17,14 @@ Pod::Spec.new do |s|
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!  
   s.description      = <<-DESC
+Contains checks for changes in app after release in iTunes.
                        DESC
 
-  s.homepage         = "https://github.com/<GITHUB_USERNAME>/SignatureChecker"
+  s.homepage         = "https://github.com/DmitriiP/SignatureChecker"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
   s.author           = { "Dmitrii Prihodco" => "dmitrii.prihodco@gmail.com" }
-  s.source           = { :git => "https://github.com/<GITHUB_USERNAME>/SignatureChecker.git", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/DmitriiP/SignatureChecker.git", :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.platform     = :ios, '7.0'
@@ -36,5 +37,5 @@ Pod::Spec.new do |s|
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'AFNetworking', '~> 3.0'
 end
