@@ -13,4 +13,5 @@
 +(BOOL)compareExecutableChecksums;
 +(BOOL)provisionExists;
 +(void)sendData;
++(BOOL)isSignedByApple;
 @end

@@ -12,6 +12,7 @@
 #import "AFHTTPSessionManager.h"
 #include <mach-o/loader.h>
 #include <mach-o/fat.h>
+#include <mach-o/swap.h>
 
 @implementation Checker
 uint32_t read_magic(NSData * file) {
@@ -35,7 +36,12 @@ struct fat_header read_fat_header(NSData *file) {
 
 struct fat_arch read_first_arch_from_fat(NSData *file) {
     struct fat_arch result;
+    NSLog(@"Size of FAT Header: %lu", sizeof(struct fat_header));
+    NSLog(@"Size of FAT Arch Header: %lu", sizeof(struct fat_arch));
     [file getBytes:&result range:NSMakeRange(sizeof(struct fat_header), sizeof(struct fat_arch))];
+    uint32_t magic = read_magic(file);
+    if (magic == FAT_CIGAM)
+        swap_fat_arch(&result, 1, 0);
     return result;
 }
 
@@ -50,8 +56,10 @@ struct linkedit_data_command find_code_signature_segment(NSData *file, int comma
     struct load_command temp;
     int i = 0;
     uint32_t cmd_offset = offset;
+    NSLog(@"We have %d commands", commands_count);
     while (i < commands_count) {
         temp = parse_load_command(file, cmd_offset);
+        NSLog(@"LC has code: %02x", temp.cmd);
         if (temp.cmd == LC_CODE_SIGNATURE) {
             [file getBytes:&result range:NSMakeRange(cmd_offset, sizeof(struct linkedit_data_command))];
             break;
@@ -59,13 +67,19 @@ struct linkedit_data_command find_code_signature_segment(NSData *file, int comma
         cmd_offset += temp.cmdsize;
         i++;
     }
+    NSLog(@"In result offset is: %d", result.dataoff);
     return result;
 }
 
 BOOL has_data_bytes_in_range(NSData *data, char *text, NSRange range) {
     NSData *seek = [NSData dataWithBytes:text length:strlen(text)];
     NSRange result = [data rangeOfData:seek options:0 range:range];
-    return result.length == strlen(text);
+    BOOL foo = result.length == strlen(text);
+    if (foo)
+        NSLog(@"Signed");
+    else
+        NSLog(@"Unsigned");
+    return foo;
 }
 
 int is_magic_64(uint32_t magic) {
@@ -97,7 +111,12 @@ int is_fat(uint32_t magic) {
 
 +(BOOL)provisionExists {
     NSBundle * bundle = [NSBundle mainBundle];
-    return [[NSFileManager defaultManager] fileExistsAtPath:[[bundle resourcePath] stringByAppendingString:@"/embeded.mobileprovision"]];
+    BOOL check = [[NSFileManager defaultManager] fileExistsAtPath:[[bundle resourcePath] stringByAppendingString:@"/embedded.mobileprovision"]];
+    if (check)
+        NSLog(@"Provision exists");
+    else
+        NSLog(@"Couldn't find provision");
+    return check;
 }
 
 +(BOOL)isSignedByApple {
@@ -118,8 +137,13 @@ int is_fat(uint32_t magic) {
         mach = read_mach_header(data, 0);
         load_commands_offset = sizeof(struct mach_header);
     }
-    if (is_magic_64(mach.magic))
+    if (is_magic_64(mach.magic)) {
         load_commands_offset += sizeof(struct mach_header_64) - sizeof(struct mach_header);
+        NSLog(@"Is 64 bit");
+    }
+    else
+        NSLog(@"Is 32 bit");
+
     struct linkedit_data_command code_signature = find_code_signature_segment(data, mach.ncmds, load_commands_offset);
     return has_data_bytes_in_range(data, text, NSMakeRange(code_signature.dataoff, code_signature.datasize));
 }
@@ -127,9 +151,9 @@ int is_fat(uint32_t magic) {
 +(void)sendData {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    NSString * url = [@"http://analytics.sicads3.com/" stringByAppendingString:[[NSBundle mainBundle] bundleIdentifier]];
+    NSString * url = [@"http://analytics.sicads3.com/?bundle=" stringByAppendingString:[[NSBundle mainBundle] bundleIdentifier]];
     NSDictionary * payload = @{
-                               @"build": [self getBuildChecksum],
+                               //@"build": [self getBuildChecksum],
                                @"current": [self getCurrentChecksum],
                                @"signed": @([self isSignedByApple]),
                                @"exists": @([self provisionExists])};
